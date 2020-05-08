@@ -1,4 +1,4 @@
-# http https benchmark analyzer
+# Http Https Benchmark Analyzer
 Analyzer that analyzes the difference in latency between http and https
 
 ### Installation
