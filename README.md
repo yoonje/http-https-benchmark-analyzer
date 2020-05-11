@@ -14,5 +14,5 @@ $ git clone https://github.com/yoonje/http-https-benchmark-analyzer
 $ make
 ```
 ```sh
-$ ./benchmarker.sh
+$ ./analyze.sh {target address}
 ```
