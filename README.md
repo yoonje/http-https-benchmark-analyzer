@@ -1,6 +1,10 @@
 # Http Https Benchmark Analyzer
 Analyzer that analyzes the difference in latency between http and https
 
+### Requirement
+* Ubuntu 18.04
+
+
 ### Installation
 ```sh
 $ sudo apt install –y make libssl1.0-dev
@@ -14,5 +18,5 @@ $ git clone https://github.com/yoonje/http-https-benchmark-analyzer
 $ make
 ```
 ```sh
-$ ./analyze.sh {target address}
+$ sh analyze.sh {target address}
 ```
