@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
     if (inet_aton(inet_ntoa(*(struct in_addr*)host->h_addr_list[0]), &dest.sin_addr.s_addr) == 0)
 	 	PANIC(argv[1]);
 
-    if (connect(s, (struct sockaddr *)&dest, sizeof(dest)))
+    if (connect(sockfd, (struct sockaddr *)&dest, sizeof(dest)))
         PANIC("Connect");
  
     SSL_library_init();
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
 
     sock = SSL_get_fd(ssl);
     
-    SSL_set_fd(ssl, s);
+    SSL_set_fd(ssl, sockfd);
     int err = SSL_connect(ssl);
     if (err <= 0) {
         fprintf("Error creating SSL connection.  err=%x\n", err);
