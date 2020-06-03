@@ -1,5 +1,5 @@
 # Http Https Benchmark Analyzer
-Analyzer that analyzes the difference in latency between http and https
+Analyzer that analyzes the difference in latency between http and https. Generally http more faster than https!
 ![result](https://user-images.githubusercontent.com/38535571/83666107-5e949880-a607-11ea-980e-c50d48ebc9fc.PNG)
 
 ### Requirement
