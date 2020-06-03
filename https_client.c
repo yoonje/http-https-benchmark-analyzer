@@ -1,9 +1,15 @@
 #include <stdio.h>
+#include <stdarg.h>
 #include <string.h>
 #include <stdlib.h>
-#include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <errno.h>
+#include <resolv.h>
+#include <unistd.h>
+#include <netdb.h>
+#include <sys/socket.h>
+#include <sys/types.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
@@ -19,7 +25,7 @@ int recv_packet()
     do {
         len=SSL_read(ssl, buf, 100);
         buf[len]=0;
-        fprintf(buf);
+        printf(buf);
     } while (len > 0);
     if (len < 0) {
         int err = SSL_get_error(ssl, len);
@@ -58,8 +64,8 @@ void log_ssl()
         char *str = ERR_error_string(err, 0);
         if (!str)
             return;
-        fprintf(str);
-        fprintf("\n");
+        printf(str);
+        printf("\n");
         fflush(stdout);
     }
 }
@@ -69,22 +75,22 @@ int main(int argc, char *argv[])
     int sockfd;
     int sock;
     struct sockaddr_in dest;
-	struct hostent *host;
+    struct hostent *host;
 
     if ( argc != 2)
-		PANIC("usage: https-client <addr>\n");
+	PANIC("usage: https-client <addr>\n");
 
     if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
-		PANIC("Socket");
+	PANIC("Socket");
     
-	bzero(&dest, sizeof(dest));
+    bzero(&dest, sizeof(dest));
     dest.sin_family = AF_INET;
     dest.sin_port = htons(443); 
     
-	host = gethostbyname(argv[1]);
+    host = gethostbyname(argv[1]);
 
     if (inet_aton(inet_ntoa(*(struct in_addr*)host->h_addr_list[0]), &dest.sin_addr.s_addr) == 0)
-	 	PANIC(argv[1]);
+	 PANIC(argv[1]);
 
     if (connect(sockfd, (struct sockaddr *)&dest, sizeof(dest)))
         PANIC("Connect");
@@ -97,7 +103,7 @@ int main(int argc, char *argv[])
     ssl = SSL_new (ctx);
 
     if (!ssl) {
-        fprintf("Error creating SSL.\n");
+        printf("Error creating SSL.\n");
         log_ssl();
         return -1;
     }
@@ -107,13 +113,13 @@ int main(int argc, char *argv[])
     SSL_set_fd(ssl, sockfd);
     int err = SSL_connect(ssl);
     if (err <= 0) {
-        fprintf("Error creating SSL connection.  err=%x\n", err);
+        printf("Error creating SSL connection.  err=%x\n", err);
         log_ssl();
         fflush(stdout);
         return -1;
     }
 
-    fprintf("SSL connection using %s\n", SSL_get_cipher (ssl));
+    printf("SSL connection using %s\n", SSL_get_cipher (ssl));
 
     char *request = malloc(sizeof(char) * 1024); 
     char *head = "GET https://";

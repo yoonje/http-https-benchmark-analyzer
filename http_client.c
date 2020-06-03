@@ -20,18 +20,17 @@ int main(int argc, char *argv[])
 	int sockfd, bytes_read;
 	struct sockaddr_in dest;
 	char buffer[MAXBUF];
-	int port = atoi(argv[2]);
 	struct hostent *host;
 
-	if ( argc != 3)
-		PANIC("usage: http-client <addr> <port>\n");
+	if ( argc != 2)
+		PANIC("usage: http-client <addr>\n");
 
 	if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0)
 		PANIC("Socket");
 
 	bzero(&dest, sizeof(dest));
 	dest.sin_family = AF_INET;
-	dest.sin_port = htons(port);
+	dest.sin_port = htons(80);
 	
 	host = gethostbyname(argv[1]);
 	
